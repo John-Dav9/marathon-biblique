@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marathon Biblique</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fdfcf8;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: linear-gradient(135deg, #e8cda5, #d4af37);
+      color: #fff;
+      padding: 4rem 1rem;
+      text-align: center;
+      border-bottom: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 3rem;
+      letter-spacing: 1px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    header h2 {
+      margin-top: 1.5rem;
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: #fffbe6;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    main {
+      padding: 1rem;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .progress {
+      margin: 1rem 0;
+      font-weight: bold;
+      color: #bfa46f;
+    }
+
+    .day {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.5rem;
+    }
+
+    .day input[type="checkbox"] {
+      margin-right: 1rem;
+      transform: scale(1.2);
+    }
+
+    .day label {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Marathon Biblique</h1>
+    <h2>70 jours. Une Parole. Une communauté. Rejoins le Marathon Biblique avec les Chercheurs de Dieu</h2>
+  </header>
+  <main>
+    <div class="progress" id="progression">Progression : 0 / 70 jours complétés</div>
+    <div id="plan"></div>
+  </main>
+
+  <script>
+    const startDate = new Date('2025-07-07');
+    const plan = [
+      "Matthieu 1-17","Matthieu 18-28; Marc 1-6","Marc 7-16; Luc 1-7","Luc 8-24","Jean 1-17",
+      "Jean 18-21; Actes 1-13","Actes 14-28; Romains 1-2","Romains 3-16; 1 Corinthiens 1-3",
+      "1 Corinthiens 4-16; 2 Corinthiens 1-4","2 Corinthiens 5-13; Galates 1-6; Éphésiens 1-2",
+      "Éphésiens 3-6; Philippiens 1-4; Colossiens 1-4; 1 Thessaloniciens 1-5",
+      "2 Thessaloniciens 1-3; 1 Timothée 1-6; 2 Timothée 1-4; Tite 1-3; Philémon 1",
+      "Hébreux 1-13; Jacques 1-4","Jacques 5; 1 Pierre 1-5; 2 Pierre 1-3; 1 Jean 1-5; 2 Jean 1; 3 Jean 1; Jude 1",
+      "Apocalypse 1-17","Apocalypse 18-22; Genèse 1-12","Genèse 13-29","Genèse 30-46",
+      "Genèse 47-50; Exode 1-13","Exode 14-30","Exode 31-40; Lévitique 1-7","Lévitique 8-24",
+      "Lévitique 25-27; Nombres 1-14","Nombres 15-31","Nombres 32-36; Deutéronome 1-12",
+      "Deutéronome 13-29","Deutéronome 30-34; Josué 1-12","Josué 13-24; Juges 1-5",
+      "Juges 6-21; Ruth 1","Ruth 2-4; 1 Samuel 1-14","1 Samuel 15-31","2 Samuel 1-17",
+      "2 Samuel 18-24; 1 Rois 1-10","1 Rois 11-22; 2 Rois 1-5","2 Rois 6-22",
+      "2 Rois 23-25; 1 Chroniques 1-14","1 Chroniques 15-29; 2 Chroniques 1-2","2 Chroniques 3-19",
+      "2 Chroniques 20-36","Esdras 1-10; Néhémie 1-7","Néhémie 8-13; Esther 1-10; Job 1",
+      "Job 2-18","Job 19-35","Job 36-42; Psaumes 1-10","Psaumes 11-27","Psaumes 28-44",
+      "Psaumes 45-61","Psaumes 62-78","Psaumes 79-95","Psaumes 96-112","Psaumes 113-129",
+      "Psaumes 130-146","Psaumes 147-150; Proverbes 1-13","Proverbes 14-30",
+      "Proverbes 31; Ecclésiaste 1-12; Cantique des Cantiques 1-4",
+      "Cantique des Cantiques 5-8; Ésaïe 1-13","Ésaïe 14-30","Ésaïe 31-47","Ésaïe 48-64",
+      "Ésaïe 65-66; Jérémie 1-15","Jérémie 16-32","Jérémie 33-49",
+      "Jérémie 50-52; Lamentations 1-5; Ézéchiel 1-9","Ézéchiel 10-26","Ézéchiel 27-43",
+      "Ézéchiel 44-48; Daniel 1-12","Osée 1-14; Joël 1-3",
+      "Amos 1-9; Abdias 1; Jonas 1-4; Michée 1-3",
+      "Michée 4-7; Nahum 1-3; Habacuc 1-3; Sophonie 1-3; Aggée 1-2; Zacharie 1-2",
+      "Zacharie 3-14; Malachie 1-4"
+    ];
+
+    const container = document.getElementById('plan');
+    const progression = document.getElementById('progression');
+
+    function formatDate(date) {
+      return date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    function renderPlan() {
+      container.innerHTML = '';
+      let doneCount = 0;
+
+      plan.forEach((lecture, i) => {
+        const dayNum = i + 1;
+        const currentDate = new Date(startDate);
+        currentDate.setDate(startDate.getDate() + i);
+        const dateString = formatDate(currentDate);
+
+        const checked = localStorage.getItem(`day_${dayNum}`) === 'true';
+        if (checked) doneCount++;
+
+        const div = document.createElement('div');
+        div.className = 'day';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = checked;
+        checkbox.addEventListener('change', () => {
+          localStorage.setItem(`day_${dayNum}`, checkbox.checked);
+          renderPlan();
+        });
+        const label = document.createElement('label');
+        label.textContent = `Jour ${dayNum} (${dateString}) : ${lecture}`;
+
+        div.appendChild(checkbox);
+        div.appendChild(label);
+        container.appendChild(div);
+      });
+
+      progression.textContent = `Progression : ${doneCount} / ${plan.length} jours complétés`;
+    }
+
+    renderPlan();
+  </script>
+</body>
+</html>
